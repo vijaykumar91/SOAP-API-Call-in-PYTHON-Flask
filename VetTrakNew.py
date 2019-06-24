@@ -585,4 +585,4 @@ def generate_update_query(table, dictionary, cursor, compareColumn, columnValue)
             retry_count = retry_count + 1
             time.sleep(1)
 
-app.run(debug=False)
+app.run(host='168.61.217.214',port='8080',debug=False)
