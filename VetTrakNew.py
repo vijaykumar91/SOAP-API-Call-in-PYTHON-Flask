@@ -8,6 +8,7 @@ from zeep import Client
 import zeep
 import sys
 import time
+import os
 from zeep.wsse.username import UsernameToken
 
 app = Flask(__name__)
