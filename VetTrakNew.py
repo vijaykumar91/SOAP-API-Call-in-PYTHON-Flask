@@ -14,17 +14,17 @@ from zeep.wsse.username import UsernameToken
 app = Flask(__name__)
 
 import pyodbc
-server = 'dbserveranasight.database.windows.net'
-database = 'warehouse'
-username = 'anasight@dbserveranasight'
-password = 'Root@12345'
+server = 'XXXXX'
+database = 'XXXX'
+username = 'XXXX'
+password = 'XXXXXX'
 cnxn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+server+';DATABASE='+database+';UID='+username+';PWD='+ password)
 cursor = cnxn.cursor()
 
 
 session = Session()
 session.auth = HTTPBasicAuth('veten1', 'bshyWs')
-client = Client('https://sthservices.ozsoft.com.au/ANS_API/VT_API.asmx?wsdl',
+client = Client('https://XXXXXX.ozsyyyyy.com.au/API/API.asmx?wsdl',
             transport=Transport(session=session))
 # print(client.service.ValidateClient('veten1', 'bshyWs'))
 # sys.exit()
