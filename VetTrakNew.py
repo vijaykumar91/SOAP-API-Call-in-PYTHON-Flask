@@ -14,10 +14,10 @@ from zeep.wsse.username import UsernameToken
 app = Flask(__name__)
 
 import pyodbc
-server = 'dbserveranasight.database.windows.net'
-database = 'warehouse'
-username = 'anasight@dbserveranasight'
-password = 'Root@12345'
+server = ''
+database = ''
+username = ''
+password = ''
 cnxn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+server+';DATABASE='+database+';UID='+username+';PWD='+ password)
 cursor = cnxn.cursor()
 
