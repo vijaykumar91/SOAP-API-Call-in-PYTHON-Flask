@@ -14,17 +14,17 @@ from zeep.wsse.username import UsernameToken
 app = Flask(__name__)
 
 import pyodbc
-server = 'XXXXX'
-database = 'XXXX'
-username = 'XXXX'
-password = 'XXXXXX'
-cnxn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+server+';DATABASE='+database+';UID='+username+';PWD='+ password)
+server = 'dbserveranasight.database.windows.net'
+database = 'warehouse'
+username = 'anasight@dbserveranasight'
+password = 'Root@12345'
+cnxn = pyodbc.connect('DRIVER={SQL Server};SERVER='+server+';DATABASE='+database+';UID='+username+';PWD='+ password)
 cursor = cnxn.cursor()
 
 
 session = Session()
 session.auth = HTTPBasicAuth('veten1', 'bshyWs')
-client = Client('https://XXXXXX.ozsyyyyy.com.au/API/API.asmx?wsdl',
+client = Client('https://sthservices.ozsoft.com.au/ANS_API/VT_API.asmx?wsdl',
             transport=Transport(session=session))
 # print(client.service.ValidateClient('veten1', 'bshyWs'))
 # sys.exit()
@@ -68,7 +68,7 @@ def GetLocations():
                         query.Address.StreetName) + "', address_POBox = '" + str(query.Address.POBox) + "', address_City = '" + str(
                         query.Address.City) + "', address_State = '" + str(
                         query.Address.State) + "', address_Postcode = '" + str(
-                        query.Address.Postcode) + "' WHERE " + compareWith + " = '" + compare_field_val + "'"
+                        query.Address.Postcode) + "', Current_Data = 0 WHERE " + compareWith + " = '" + compare_field_val + "'"
                     cursor.execute(update_query_builder)
                     cnxn.commit()
                     print('duplicate==>',record[0])
@@ -171,7 +171,7 @@ def SearchForEmployer():
                         query.PostalAddress.POBox) + "', Postal_Adress_City = '" + str(
                         query.PostalAddress.City) + "', Postal_Adress_State = '" + str(
                         query.BusinessAddress.State) + "', Postal_Adress_Postcode = '" + str(
-                        query.PostalAddress.Postcode) + "' WHERE " + compare_field_name + " = '" + compare_field_val + "'"
+                        query.PostalAddress.Postcode) + "', Current_Data = 0 WHERE " + compare_field_name + " = '" + compare_field_val + "'"
                     cursor.execute(update_query_builder)
                     cnxn.commit()
 
@@ -318,7 +318,7 @@ def GetEnrolmentsForClient():
                         query.EnrolmentType) + "', EnrolmentTypeCode = '" + str(query.EnrolmentTypeCode) + "', Clie_Code = '" + str(
                         query.Clie_Code) + "', GivenName = '" + str(
                         query.GivenName) + "', Surname = '" + str(
-                        query.Surname) + "' WHERE " + compare_field_name + " = '" + compare_field_val + "'"
+                        query.Surname) + "', Current_Data = 0 WHERE " + compare_field_name + " = '" + compare_field_val + "'"
                     print("update_query_builder=>", update_query_builder)
                     cursor.execute(update_query_builder)
                     cnxn.commit()
@@ -388,7 +388,7 @@ def GetContractsOrEnrolmentsForClient():
                         query.StateShortName) + "', EmployerContactCode = '" + str(
                         query.EmployerContactCode) + "', Rec_Type = '" + str(
                         query.Rec_Type) + "', Loca_Code = '" + str(
-                        query.Loca_Code) + "' WHERE " + compare_field_name + " = '" + compare_field_val + "'"
+                        query.Loca_Code) + "', Current_Data = 0 WHERE " + compare_field_name + " = '" + compare_field_val + "'"
                     cursor.execute(update_query_builder)
                     cnxn.commit()
 
@@ -500,7 +500,7 @@ def GetClientDetails():
                         query.UsualAddress) + "', PostalAddress = '" + str(
                         query.PostalAddress) + "', USI = '" + str(
                         query.USI) + "', USIExempt = '" + str(
-                        query.USIExempt) + "' WHERE " + compare_field_name + " = '" + compare_field_val + "'"
+                        query.USIExempt) + "', Current_Data = 0 WHERE " + compare_field_name + " = '" + compare_field_val + "'"
                 cursor.execute(update_query_builder)
                 cnxn.commit()
 
@@ -576,7 +576,7 @@ def generate_update_query(table, dictionary, cursor, compareColumn, columnValue)
                 [f"{key} = '{value}'" if "'" not in str(value) else f"""{key} = '{value.replace("'", "''")}'""" for
                  key, value in output_dict.items()])
 
-            update_query_builder = "UPDATE " + table + " SET " + values + " WHERE " + compareColumn + " = '" + columnValue + "'"
+            update_query_builder = "UPDATE " + table + " SET " + values + ", Current_Data = 0 WHERE " + compareColumn + " = '" + columnValue + "'"
             cursor.execute(update_query_builder)
             cnxn.commit()
             retry_flag = False
